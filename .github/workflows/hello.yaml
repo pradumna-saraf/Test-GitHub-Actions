@@ -1,13 +1,31 @@
-name: Hello World
+name: Create Release
 on:
   push:
     branches:
       - main
 
 jobs:
-  hello:
-    runs-on: ubuntu-24.04-arm
-
+  create-release:
+    name: Creating Tag and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Print Hello World
-        run: 'echo "Hello World"'
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Creating Tag
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v6
+        with:
+          github-token: ${{ secrets.github_token }}
+          output-file: "false"
+
+      - name: Create Release
+        if: steps.changelog.outputs.skipped == 'false'
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.github_token }}
+          tag	: ${{ steps.changelog.outputs.tag }}
+          name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
