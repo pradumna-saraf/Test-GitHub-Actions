@@ -21,6 +21,7 @@ jobs:
           github-token: ${{ secrets.github_token }}
           output-file: "false"
           version-file: './pyproject.toml'
+          version-path: 'project.version'
 
 
       - name: Create Release
