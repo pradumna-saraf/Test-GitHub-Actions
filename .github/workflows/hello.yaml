@@ -20,6 +20,8 @@ jobs:
         with:
           github-token: ${{ secrets.github_token }}
           output-file: "false"
+          version-file: './pyproject.toml'
+
 
       - name: Create Release
         if: steps.changelog.outputs.skipped == 'false'
