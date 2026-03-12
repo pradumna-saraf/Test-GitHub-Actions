@@ -1,0 +1,14 @@
+name: run_github_action_workflow_flow
+on:
+  workflow_dispatch:
+    inputs:
+      foo:
+        description: "Input from Kestra"
+        required: false
+        default: "bar"
+jobs:
+  run_from_kestra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show input
+        run: echo "foo=${{ github.event.inputs.foo }}"
